@@ -1,77 +1,106 @@
 import json
-import os
 import time
-from typing import Any
+from dataclasses import dataclass, field, fields
+from pathlib import Path
 
 import httpx
 
+BOARDS_DIR = Path("boards")
+PIECES_DIR = Path("pieces")
 
-def load_json(file_path: str) -> dict[str, Any]:
+
+@dataclass(kw_only=True, frozen=True)
+class FetcherConfig:
+    default_size: int
+    piece_names: list[str] = field(default_factory=list)
+    pieces: dict[str, str] = field(default_factory=dict)
+    boards: dict[str, str] = field(default_factory=dict)
+
+    def __post_init__(self):
+        for p in fields(self):
+            if getattr(self, p.name) is None:
+                raise AttributeError(f"'{p.name}' is None!")
+
+
+class LimitedProgressPrinter:
+    def __init__(self, limit: int):
+        if limit <= 0:
+            raise ValueError(f"Non-positive limit")
+        self._curr = 1
+        self._limit = limit
+        self._progress_val_len = 2 * len(str(self._limit)) + 4
+
+    def print_progress(self, s: str, *, end: str = "\n"):
+        if self._curr > self._limit:
+            raise RuntimeError(f"Limit of {self._limit} is reached!")
+        progress_val = f"{self._curr}/{self._limit}: ".rjust(self._progress_val_len)
+        self._curr += 1
+        print(progress_val + s, end=end)
+
+
+def bold(s: str) -> str:
+    return f"\033[1m{s}\033[0m"
+
+
+def load_config_from_json(file_path: str) -> FetcherConfig:
     with open(file_path, "r") as reader:
-        return json.loads(reader.read())
+        json_data = json.load(reader)
+        return FetcherConfig(
+            default_size=json_data["default-size"],
+            piece_names=json_data["piece-names"],
+            pieces=json_data["pieces"],
+            boards=json_data["boards"],
+        )
 
 
-def save_file(file_path: str, data: bytes) -> None:
+def save_to_file(file_path: Path, data: bytes) -> None:
+    if file_path.is_dir():
+        raise IsADirectoryError(f"'{file_path}' is a directory!")
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, "wb") as writer:
         writer.write(data)
-    print(f"File '{file_path}' created!")
 
 
-def check_dirs(directories: list[str]) -> None:
-    for d in directories:
-        if not os.path.exists(d):
-            os.mkdir(d)
-
-
-def get_request(url_path: str, wait_time: float = 0.2) -> bytes:
+def make_request(url_path: str, *, wait_time_ms: int = 0) -> bytes:
     # Wait, before making request, be kind to server
-    time.sleep(wait_time)
+    if wait_time_ms > 0:
+        time.sleep(wait_time_ms / 1000)
 
     response: httpx.Response = httpx.get(url_path)
+    response.raise_for_status()
 
-    if response.status_code == 200:
-        return response.content
-    else:
-        print(f"Something bad with {response}")
-        return b""
+    return response.content
 
 
-def start_process(config: dict[str, Any]) -> None:
-    boards: dict[str, str] = config["boards"]
-    pieces: dict[str, str] = config["pieces"]
-    piece_names: list[str] = config["piece-names"]
-    def_size: int = config["default-size"]
-    files_size: int = len(boards) + len(pieces) * len(piece_names)
-    file_index: int = 1
+def start_process(config: FetcherConfig):
+    boards = config.boards
+    pieces = config.pieces
+    piece_names = config.piece_names
+    def_size = config.default_size
+    total_size = len(boards) + len(pieces) * len(piece_names)
 
-    def print_index(_file_index: int) -> None:
-        pre_space = " " * (len(str(files_size)) - len(str(_file_index)))
-        print(f"{pre_space}{_file_index}/{files_size}: ", end="")
+    index_printer = LimitedProgressPrinter(total_size)
 
-    boards_dir = "boards/"
-    pieces_dir = "pieces/"
-    pieces_subdirs = [f"{pieces_dir}{k}/" for k in pieces.keys()]
-
-    check_dirs([boards_dir, pieces_dir, *pieces_subdirs])
-
-    print(f"Downloading {files_size} files...")
+    print(bold(f"Downloading {total_size} file(s)..."))
 
     for name, url in boards.items():
-        content = get_request(url.format(def_size))
-        print_index(file_index)
-        save_file(f"boards/{name}.png", content)
-        file_index += 1
+        content = make_request(url.format(def_size), wait_time_ms=200)
+        file_path = BOARDS_DIR / f"{name}.png"
+        save_to_file(file_path, content)
+        index_printer.print_progress(f"Board is stored at: {file_path}")
 
     for name, url in pieces.items():
+        print(f"Download pieces of '{name}':")
         for pn in piece_names:
-            content = get_request(url.format(def_size, pn))
-            print_index(file_index)
-            save_file(f"{pieces_dir}{name}/{pn}.png", content)
-            file_index += 1
+            content = make_request(url.format(def_size, pn), wait_time_ms=200)
+            file_path = BOARDS_DIR / name / f"{pn}.png"
+            save_to_file(file_path, content)
+            index_printer.print_progress(f"Piece of '{name}' is stored at: {file_path}")
 
 
 def main() -> None:
-    start_process(load_json("data.json"))
+    config = load_config_from_json("data.json")
+    start_process(config)
 
 
 if __name__ == "__main__":
