@@ -9,7 +9,7 @@ import httpx
 BOARDS_DIR = Path("boards")
 PIECES_DIR = Path("pieces")
 
-DEFAULT_CONFIG_FILE = "data.json"
+DEFAULT_CONFIG_FILE = "default-config.json"
 
 
 @dataclass(kw_only=True, frozen=True)
