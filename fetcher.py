@@ -1,5 +1,6 @@
 import json
 import time
+from argparse import ArgumentParser
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 
@@ -7,6 +8,8 @@ import httpx
 
 BOARDS_DIR = Path("boards")
 PIECES_DIR = Path("pieces")
+
+DEFAULT_CONFIG_FILE = "data.json"
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -38,8 +41,26 @@ class LimitedProgressPrinter:
         print(progress_val + s, end=end)
 
 
+@dataclass(kw_only=True, frozen=True)
+class ParsedArgs:
+    config: str
+
+
 def bold(s: str) -> str:
     return f"\033[1m{s}\033[0m"
+
+
+def parse_cmd_args() -> ParsedArgs:
+    parser = ArgumentParser(description="A script for downloading boards and pieces.")
+    parser.add_argument(
+        "-c",
+        "--config",
+        required=False,
+        default=DEFAULT_CONFIG_FILE,
+        help="Configuration file",
+    )
+    args = parser.parse_args()
+    return ParsedArgs(config=args.config)
 
 
 def load_config_from_json(file_path: str) -> FetcherConfig:
@@ -99,8 +120,9 @@ def start_process(config: FetcherConfig):
 
 
 def main() -> None:
-    config = load_config_from_json("data.json")
-    start_process(config)
+    args = parse_cmd_args()
+    config_file = load_config_from_json(args.config)
+    start_process(config_file)
 
 
 if __name__ == "__main__":
