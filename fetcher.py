@@ -114,7 +114,7 @@ def start_process(config: FetcherConfig):
         print(f"Download pieces of '{name}':")
         for pn in piece_names:
             content = make_request(url.format(def_size, pn), wait_time_ms=200)
-            file_path = BOARDS_DIR / name / f"{pn}.png"
+            file_path = PIECES_DIR / name / f"{pn}.png"
             save_to_file(file_path, content)
             index_printer.print_progress(f"Piece of '{name}' is stored at: {file_path}")
 
