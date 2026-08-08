@@ -2,59 +2,27 @@
 
 This repository contains boards and sets of pieces from <strong>[chess.com](https://www.chess.com)</strong>.
 </br>
-Checkout `default-config.json`.
+Checkout `default-config.json` for details.
+</br>
+Checkout `boards/` and `pieces/` directories to see available images of boards and pieces.
 
 
-<!-- WHOLE_BOARD -->
-<!-- Black Pieces -->
+<!-- BOARD -->
 <p align="center">
-    <img src="pieces/3d_wood/br.png" width="6%" />
-    <img src="pieces/3d_wood/bn.png" width="6%" />
-    <img src="pieces/3d_wood/bb.png" width="6%" />
-    <img src="pieces/3d_wood/bq.png" width="6%" />
-    <img src="pieces/3d_wood/bk.png" width="6%" />
-    <img src="pieces/3d_wood/bb.png" width="6%" />
-    <img src="pieces/3d_wood/bn.png" width="6%" />
-    <img src="pieces/3d_wood/br.png" width="6%" />
+    <img src="./.media/sample_chess_position.png" width="50%" alt="Sample chess board" />
 </p>
 <p align="center">
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
-    <img src="pieces/3d_wood/bp.png" width="6%" />
+    <code>uv run python render_position.py --pieces ejgfv --board 9rdwe</code>
 </p>
+<!-- BOARD -->
 
-<!-- Board -->
-<p align="center">
-    <img src="boards/burled_wood.png" width="50%" />
-</p>
 
-<!-- White Pieces -->
-<p align="center">
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-    <img src="pieces/3d_wood/wp.png" width="6%" />
-</p>
-<p align="center">
-    <img src="pieces/3d_wood/wr.png" width="6%" />
-    <img src="pieces/3d_wood/wn.png" width="6%" />
-    <img src="pieces/3d_wood/wb.png" width="6%" />
-    <img src="pieces/3d_wood/wq.png" width="6%" />
-    <img src="pieces/3d_wood/wk.png" width="6%" />
-    <img src="pieces/3d_wood/wb.png" width="6%" />
-    <img src="pieces/3d_wood/wn.png" width="6%" />
-    <img src="pieces/3d_wood/wr.png" width="6%" />
-</p>
-<!-- WHOLE_BOARD -->
+## Initialize the Project
+
+```shell
+uv sync # Download packages
+```
+
 
 ## Downloading Boards and Pieces
 
@@ -63,7 +31,7 @@ To download boards and pieces from <strong>[chess.com](https://www.chess.com)</s
 ```shell
 python fetcher.py
 # or
-python fetcher.py -c/--config <CONFIG-FILE>
+python fetcher.py -c/--config <CONFIG-FILE> -o/--output <OUTPUT-DIR>
 ```
 
 
@@ -76,16 +44,6 @@ The `render_position.py` script generates chess position images by combining boa
 - Configurable square sizes
 - Rendering from either player's perspective (white or black)
 - Custom output filenames
-
-### Installation
-
-Install the required dependencies:
-
-```bash
-uv venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
-```
 
 ### Usage
 
