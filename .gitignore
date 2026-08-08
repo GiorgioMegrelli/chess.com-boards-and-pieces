@@ -1,0 +1,5 @@
+.idea/
+
+# UV
+.ruff_cache/
+.venv/

@@ -1,4 +1,4 @@
-click
-httpx
-pillow
-tqdm
+click>=8.4.2
+httpx>=0.28.1
+pillow>=12.2.0
+tqdm>=4.70.0

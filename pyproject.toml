@@ -1,0 +1,17 @@
+[project]
+name = "chess-com-boards-and-pieces"
+version = "2.0"
+description = "This repository contains boards and sets of pieces from https://www.chess.com"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.4.2",
+    "httpx>=0.28.1",
+    "pillow>=12.2.0",
+    "tqdm>=4.70.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.16.1",
+]
