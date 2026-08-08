@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import json
 import re
 import time
@@ -9,9 +10,13 @@ from typing import Any, NamedTuple
 
 import click
 import httpx
+from PIL import Image
 from tqdm import tqdm
 
 DEFAULT_WAIT_MS = 200
+
+STANDARD_MIME_TYPE = "image/png"
+SUPPORTED_MIME_TYPES = (STANDARD_MIME_TYPE, "image/jpeg", "image/gif", "image/webp")
 
 
 class ColEntry(NamedTuple):
@@ -151,24 +156,44 @@ def human_readable_piece(pn: str) -> str:
     return f"{color} {piece_name}"
 
 
-def make_request(url_path: str, *, wait_time_ms: int = 0) -> bytes:
+def make_request(url_path: str, *, wait_time_ms: int = 0) -> httpx.Response:
     # Wait, before making request, be kind to server
     if wait_time_ms > 0:
         time.sleep(wait_time_ms / 1000)
 
     response = httpx.get(url_path)
     response.raise_for_status()
-    return response.content
+    return response
+
+
+def request_image_as_png(url_path: str, *, wait_time_ms: int = 0) -> bytes:
+    response = make_request(url_path, wait_time_ms=wait_time_ms)
+    content_type = response.headers["content-type"].lower()
+    if content_type not in SUPPORTED_MIME_TYPES:
+        raise ValueError(f"Unsupported MIME type: {content_type}")
+    if content_type == STANDARD_MIME_TYPE:
+        return response.content
+    img_obj = Image.open(io.BytesIO(response.content))
+    output_buffer = io.BytesIO()
+    img_obj.convert("RGB").save(output_buffer, format="PNG")
+    return output_buffer.getvalue()
 
 
 def start_process(config: FetcherConfig, output_dir: Path):
     with tqdm(total=len(config.boards), desc="Downloading boards") as p_bar:
         for col_name, board in config.boards.items():
+            if col_name != "6m5lc":
+                continue
+            print("Processing 6m5lc")
             p_bar.set_description(f"Downloading '{col_name}'")
-            content = make_request(board.default_url, wait_time_ms=DEFAULT_WAIT_MS)
+            content = request_image_as_png(
+                board.default_url, wait_time_ms=DEFAULT_WAIT_MS
+            )
             file_path = output_dir / "boards" / f"{col_name}.png"
             save_to_file(file_path, content)
             p_bar.update(1)
+            if True:
+                return
         p_bar.set_description("Boards are Downloaded!")
 
     pieces_dir = output_dir / "pieces"
@@ -178,7 +203,7 @@ def start_process(config: FetcherConfig, output_dir: Path):
             with tqdm(pieces, leave=False) as nested_p_bar:
                 for piece in nested_p_bar:
                     nested_p_bar.set_description(human_readable_piece(piece.name))
-                    content = make_request(
+                    content = request_image_as_png(
                         piece.default_url, wait_time_ms=DEFAULT_WAIT_MS
                     )
                     file_path = pieces_dir / col_name / f"{piece.name}.png"
