@@ -5,7 +5,7 @@ import re
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 import click
 import httpx
@@ -14,9 +14,18 @@ from tqdm import tqdm
 DEFAULT_WAIT_MS = 200
 
 
+class ColEntry(NamedTuple):
+    id: str
+    readable_name: str
+    templated_url: str
+    default_size: int
+    available_sizes: list[int]
+
+
 @dataclass(kw_only=True, frozen=True)
 class BoardEntry:
-    collection: str
+    collection_id: str
+    readable_name: str
     url_template: str
     default_size: int
     available_sizes: list[int]
@@ -26,7 +35,7 @@ class BoardEntry:
         return list(re.findall(r"{(\w+)}", self.url_template))
 
     def _get_format_map(self) -> dict[str, str | int]:
-        return {"collection": self.collection, "size": self.default_size}
+        return {"collection": self.collection_id, "size": self.default_size}
 
     @property
     def default_url(self) -> str:
@@ -58,26 +67,34 @@ class FetcherConfig:
     @staticmethod
     def _handle_collections(
         cols: dict, url_templates: dict[str, str]
-    ) -> list[tuple[str, str, int, list[int]]]:
+    ) -> list[ColEntry]:
         entries = []
         for key, col in cols.items():
             templated_url = url_templates[col["url-template"]]
-            default_size = col["size"]["default"]
             available_sizes = FetcherConfig._exec_range(col["size"]["available"])
-            entries.append((key, templated_url, default_size, available_sizes))
+            entries.append(
+                ColEntry(
+                    id=key,
+                    readable_name=col["readable_name"],
+                    templated_url=templated_url,
+                    default_size=col["size"]["default"],
+                    available_sizes=available_sizes,
+                )
+            )
         return entries
 
     @staticmethod
     def _handle_boards(d: dict, url_templates: dict[str, str]) -> dict[str, BoardEntry]:
         col_entries = FetcherConfig._handle_collections(d["collections"], url_templates)
         return {
-            name: BoardEntry(
-                collection=name,
-                url_template=templated_url,
-                default_size=default_size,
-                available_sizes=available_sizes,
+            col_entry.id: BoardEntry(
+                collection_id=col_entry.id,
+                readable_name=col_entry.readable_name,
+                url_template=col_entry.templated_url,
+                default_size=col_entry.default_size,
+                available_sizes=col_entry.available_sizes,
             )
-            for name, templated_url, default_size, available_sizes in col_entries
+            for col_entry in col_entries
         }
 
     @staticmethod
@@ -87,17 +104,18 @@ class FetcherConfig:
         col_entries = FetcherConfig._handle_collections(d["collections"], url_templates)
         piece_names = d["names"].split(";")
         return {
-            name: [
+            col_entry.id: [
                 PieceEntry(
-                    collection=name,
+                    collection_id=col_entry.id,
+                    readable_name=col_entry.readable_name,
                     name=pn,
-                    url_template=templated_url,
-                    default_size=default_size,
-                    available_sizes=available_sizes,
+                    url_template=col_entry.templated_url,
+                    default_size=col_entry.default_size,
+                    available_sizes=col_entry.available_sizes,
                 )
                 for pn in piece_names
             ]
-            for name, templated_url, default_size, available_sizes in col_entries
+            for col_entry in col_entries
         }
 
     @staticmethod
@@ -169,7 +187,7 @@ def start_process(config: FetcherConfig, output_dir: Path):
         p_bar.set_description("Pieces are Downloaded!")
 
 
-@click.command()
+@click.command(context_settings={"help_option_names": ["-h", "--help"]})
 @click.option(
     "-c",
     "--config",

@@ -2,6 +2,7 @@
     "boards": {
         "collections": {
             "9rdwe": {
+                "readable_name": "Green",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -9,6 +10,7 @@
                 }
             },
             "dark_wood": {
+                "readable_name": "Wood",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -16,6 +18,7 @@
                 }
             },
             "glass": {
+                "readable_name": "Glass",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -23,6 +26,7 @@
                 }
             },
             "brown": {
+                "readable_name": "Brown",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -30,6 +34,7 @@
                 }
             },
             "icy_sea": {
+                "readable_name": "Icy Sea",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -37,6 +42,7 @@
                 }
             },
             "newspaper": {
+                "readable_name": "Newspaper",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -44,6 +50,7 @@
                 }
             },
             "walnut": {
+                "readable_name": "Walnut",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -51,6 +58,7 @@
                 }
             },
             "sky": {
+                "readable_name": "Sky",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -58,6 +66,7 @@
                 }
             },
             "lolz": {
+                "readable_name": "Lolz",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -65,6 +74,7 @@
                 }
             },
             "stone": {
+                "readable_name": "Stone",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -72,6 +82,7 @@
                 }
             },
             "bases": {
+                "readable_name": "Bases",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -79,6 +90,7 @@
                 }
             },
             "8_bit": {
+                "readable_name": "8-Bit",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -86,6 +98,7 @@
                 }
             },
             "marble": {
+                "readable_name": "Marble",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -93,6 +106,7 @@
                 }
             },
             "purple": {
+                "readable_name": "Purple",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -100,6 +114,7 @@
                 }
             },
             "translucent": {
+                "readable_name": "Overlay",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -107,6 +122,7 @@
                 }
             },
             "metal": {
+                "readable_name": "Metal",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -114,6 +130,7 @@
                 }
             },
             "tournament": {
+                "readable_name": "Tournament",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -121,6 +138,7 @@
                 }
             },
             "dash": {
+                "readable_name": "Dash",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -128,6 +146,7 @@
                 }
             },
             "burled_wood": {
+                "readable_name": "Burled Wood",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -135,6 +154,7 @@
                 }
             },
             "blue": {
+                "readable_name": "Dark Blue",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -142,14 +162,16 @@
                 }
             },
             "bubblegum": {
+                "readable_name": "Bubblegum",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
                     "available": "range(20, 301, 10)"
                 },
-                "alternative-name": "zshw9"
+                "alternative-id": "zshw9"
             },
             "checkers": {
+                "readable_name": "Checkers",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -157,6 +179,7 @@
                 }
             },
             "graffiti": {
+                "readable_name": "Graffiti",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -164,6 +187,7 @@
                 }
             },
             "light": {
+                "readable_name": "Light",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -171,6 +195,7 @@
                 }
             },
             "neon": {
+                "readable_name": "Neon",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -178,6 +203,7 @@
                 }
             },
             "orange": {
+                "readable_name": "Orange",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -185,6 +211,7 @@
                 }
             },
             "parchment": {
+                "readable_name": "Parchment",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -192,6 +219,7 @@
                 }
             },
             "red": {
+                "readable_name": "Red",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -199,6 +227,7 @@
                 }
             },
             "sand": {
+                "readable_name": "Sand",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -206,6 +235,7 @@
                 }
             },
             "tan": {
+                "readable_name": "Tan",
                 "url-template": "chesscom-files-boards",
                 "size": {
                     "default": 200,
@@ -213,6 +243,7 @@
                 }
             },
             "4fs27": {
+                "readable_name": "Blue",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -220,6 +251,7 @@
                 }
             },
             "g715q": {
+                "readable_name": "Pink",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -227,6 +259,7 @@
                 }
             },
             "my2xa": {
+                "readable_name": "Chess The Musical",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -234,6 +267,7 @@
                 }
             },
             "bju81": {
+                "readable_name": "Event - Naroditsky Memorial",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -241,6 +275,7 @@
                 }
             },
             "z4m3d": {
+                "readable_name": "Event - Esports World Cup 2026",
                 "url-template": "assets-themes-boards",
                 "size": {
                     "default": 200,
@@ -248,6 +283,7 @@
                 }
             },
             "6m5lc": {
+                "readable_name": "Sky and Sea",
                 "url-template": "assets-themes-boards-jpg",
                 "size": {
                     "default": 200,
@@ -260,6 +296,7 @@
         "names": "bb;bk;bn;bp;bq;br;wb;wk;wn;wp;wq;wr",
         "collections": {
             "ejgfv": {
+                "readable_name": "Neo",
                 "url-template": "assets-themes-pieces",
                 "size": {
                     "default": 150,
@@ -267,14 +304,16 @@
                 }
             },
             "8qetl": {
+                "readable_name": "Neo Angle",
                 "url-template": "assets-themes-pieces",
                 "size": {
                     "default": 150,
                     "available": "range(20, 301, 10)"
                 },
-                "alternative-name": "4ujxj"
+                "alternative-id": "4ujxj"
             },
             "game_room": {
+                "readable_name": "Game Room",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -282,6 +321,7 @@
                 }
             },
             "wood": {
+                "readable_name": "Wood",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -289,6 +329,7 @@
                 }
             },
             "glass": {
+                "readable_name": "Glass",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -296,6 +337,7 @@
                 }
             },
             "gothic": {
+                "readable_name": "Gothic",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -303,6 +345,7 @@
                 }
             },
             "classic": {
+                "readable_name": "Classic",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -310,6 +353,7 @@
                 }
             },
             "metal": {
+                "readable_name": "Metal",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -317,6 +361,7 @@
                 }
             },
             "bases": {
+                "readable_name": "Bases",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -324,6 +369,7 @@
                 }
             },
             "neo_wood": {
+                "readable_name": "Neo-Wood",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -331,6 +377,7 @@
                 }
             },
             "icy_sea": {
+                "readable_name": "Icy Sea",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -338,6 +385,7 @@
                 }
             },
             "club": {
+                "readable_name": "Club",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -345,6 +393,7 @@
                 }
             },
             "ocean": {
+                "readable_name": "Ocean",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -352,6 +401,7 @@
                 }
             },
             "newspaper": {
+                "readable_name": "Newspaper",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -359,6 +409,7 @@
                 }
             },
             "space": {
+                "readable_name": "Space",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -366,6 +417,7 @@
                 }
             },
             "cases": {
+                "readable_name": "Cases",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -373,6 +425,7 @@
                 }
             },
             "condal": {
+                "readable_name": "Condal",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -380,6 +433,7 @@
                 }
             },
             "3d_chesskid": {
+                "readable_name": "3D - ChessKid",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -387,6 +441,7 @@
                 }
             },
             "8_bit": {
+                "readable_name": "8-Bit",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -394,6 +449,7 @@
                 }
             },
             "marble": {
+                "readable_name": "Marble",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -401,6 +457,7 @@
                 }
             },
             "book": {
+                "readable_name": "Book",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -408,6 +465,7 @@
                 }
             },
             "alpha": {
+                "readable_name": "Alpha",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -415,6 +473,7 @@
                 }
             },
             "bubblegum": {
+                "readable_name": "Bubblegum",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -422,6 +481,7 @@
                 }
             },
             "dash": {
+                "readable_name": "Dash",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -429,6 +489,7 @@
                 }
             },
             "graffiti": {
+                "readable_name": "Graffiti",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -436,6 +497,7 @@
                 }
             },
             "light": {
+                "readable_name": "Light",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -443,6 +505,7 @@
                 }
             },
             "lolz": {
+                "readable_name": "Lolz",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -450,6 +513,7 @@
                 }
             },
             "luca": {
+                "readable_name": "Luca",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -457,6 +521,7 @@
                 }
             },
             "maya": {
+                "readable_name": "Maya",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -464,6 +529,7 @@
                 }
             },
             "modern": {
+                "readable_name": "Modern",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -471,6 +537,7 @@
                 }
             },
             "nature": {
+                "readable_name": "Nature",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -478,6 +545,7 @@
                 }
             },
             "neon": {
+                "readable_name": "Neon",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -485,6 +553,7 @@
                 }
             },
             "sky": {
+                "readable_name": "Sky",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -492,6 +561,7 @@
                 }
             },
             "tigers": {
+                "readable_name": "Tigers",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -499,6 +569,7 @@
                 }
             },
             "tournament": {
+                "readable_name": "Tournament",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -506,6 +577,7 @@
                 }
             },
             "vintage": {
+                "readable_name": "Vintage",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -513,6 +585,7 @@
                 }
             },
             "3d_wood": {
+                "readable_name": "Real 3D",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -520,6 +593,7 @@
                 }
             },
             "3d_staunton": {
+                "readable_name": "3D - Staunton",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
@@ -527,6 +601,7 @@
                 }
             },
             "3d_plastic": {
+                "readable_name": "3D - Plastic",
                 "url-template": "chesscom-files-pieces",
                 "size": {
                     "default": 150,
