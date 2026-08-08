@@ -1,2 +1,4 @@
+click
 httpx
-Pillow
+pillow
+tqdm
