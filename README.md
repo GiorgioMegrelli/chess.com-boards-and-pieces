@@ -48,29 +48,28 @@ The `render_position.py` script generates chess position images by combining boa
 ### Usage
 
 ```
-usage: render_position.py [-h] [--fen FEN | --id ID] --board BOARD
-                          --pieces PIECES [--size SIZE] [--side {white,black}]
-                          [--output OUTPUT]
+Usage: render_position.py [OPTIONS]
 
-Render chess positions from FEN notation using chess.com board and piece images.
+  Render chess positions from FEN notation using chess.com board and piece
+  images.
 
-options:
-  -h, --help            show this help message and exit
-  --fen FEN             FEN string representing the chess position (default:
+  Examples:
+  * Starting position with brown board and alpha pieces:
+      uv run render_position.py --board brown --pieces alpha --size 80
+  * Custom position:
+      uv run render_position.py --fen "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" --board marble --pieces 3d_wood --size 100
+
+Options:
+  --fen TEXT            FEN string representing the chess position (default:
                         starting position if neither --fen nor --id provided)
-  --id ID               Load FEN from fen.json by position ID
-  --board BOARD         Board style name without .png extension (e.g.,
-                        "brown", "marble")
-  --pieces PIECES       Pieces directory name (e.g., "alpha", "3d_wood")
-  --size SIZE           Size of each square in pixels (default: 80)
-  --side {white,black}  Perspective to render from: white (bottom) or black
-                        (top). Default: white
-  --output OUTPUT       Output filename (default: chess_position.png)
-
-Examples:
-  # Starting position with brown board and alpha pieces
-  render_position.py --board brown --pieces alpha --size 80
-
-  # Custom position
-  render_position.py --fen "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" --board marble --pieces 3d_wood --size 100
+  --id INTEGER          Load FEN from fen.json by position ID
+  --board TEXT          Board style name without .png extension (e.g.,
+                        "brown", "marble")  [required]
+  --pieces TEXT         Pieces directory name (e.g., "alpha", "3d_wood")
+                        [required]
+  --size INTEGER        Size of each square in pixels  [default: 80]
+  --side [white|black]  Perspective to render from: white (bottom) or black
+                        (top)  [default: white]
+  --output PATH         Output filename  [default: chess_position.png]
+  -h, --help            Show this message and exit.
 ```

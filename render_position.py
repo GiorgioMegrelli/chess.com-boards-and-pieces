@@ -5,39 +5,36 @@ Chess Position Renderer
 Generates chess position images by combining board and piece PNGs based on a FEN string.
 """
 
-import argparse
 import json
-import os
 import sys
 from pathlib import Path
-from typing import Optional
 
+import click
 from PIL import Image
-
 
 # Default starting position FEN
 DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 DEFAULT_SIZE = 80
-DEFAULT_OUTPUT = "chess_position.png"
+DEFAULT_OUTPUT = Path("chess_position.png")
 
 # Mapping FEN characters to piece filenames
 PIECE_MAP = {
-    'r': 'br.png',  # black rook
-    'n': 'bn.png',  # black knight
-    'b': 'bb.png',  # black bishop
-    'q': 'bq.png',  # black queen
-    'k': 'bk.png',  # black king
-    'p': 'bp.png',  # black pawn
-    'R': 'wr.png',  # white rook
-    'N': 'wn.png',  # white knight
-    'B': 'wb.png',  # white bishop
-    'Q': 'wq.png',  # white queen
-    'K': 'wk.png',  # white king
-    'P': 'wp.png',  # white pawn
+    "r": "br.png",  # black rook
+    "n": "bn.png",  # black knight
+    "b": "bb.png",  # black bishop
+    "q": "bq.png",  # black queen
+    "k": "bk.png",  # black king
+    "p": "bp.png",  # black pawn
+    "R": "wr.png",  # white rook
+    "N": "wn.png",  # white knight
+    "B": "wb.png",  # white bishop
+    "Q": "wq.png",  # white queen
+    "K": "wk.png",  # white king
+    "P": "wp.png",  # white pawn
 }
 
 
-def parse_fen(fen: str) -> list[list[Optional[str]]]:
+def parse_fen(fen: str) -> list[list[str | None]]:
     """
     Parse FEN string and return 8x8 board representation.
 
@@ -49,15 +46,15 @@ def parse_fen(fen: str) -> list[list[Optional[str]]]:
     board_layout = fen.split()[0]
 
     # Split into ranks (8 to 1, top to bottom)
-    ranks = board_layout.split('/')
+    ranks = board_layout.split("/")
 
     if len(ranks) != 8:
         raise ValueError(f"Invalid FEN: expected 8 ranks, got {len(ranks)}")
 
-    board: list[list[Optional[str]]] = []
+    board: list[list[str | None]] = []
 
     for rank in ranks:
-        row: list[Optional[str]] = []
+        row: list[str | None] = []
         for char in rank:
             if char.isdigit():
                 # Empty squares
@@ -95,12 +92,12 @@ def load_fen_by_id(position_id: int, fen_file: str = "fen.json") -> str:
     if not fen_path.exists():
         raise FileNotFoundError(f"FEN file not found: {fen_path}")
 
-    with open(fen_path, 'r') as f:
+    with open(fen_path, "r") as f:
         positions = json.load(f)
 
     for position in positions:
-        if position.get('id') == position_id:
-            return position['fen']
+        if position.get("id") == position_id:
+            return position["fen"]
 
     raise ValueError(f"Position with ID {position_id} not found in {fen_file}")
 
@@ -110,8 +107,8 @@ def render_position(
     board_name: str,
     pieces_name: str,
     size: int,
-    output: str,
-    side: str = 'white'
+    output: Path,
+    side: str = "white",
 ) -> None:
     """
     Render a chess position to an image file.
@@ -143,11 +140,11 @@ def render_position(
     board_img = board_img.resize((board_size, board_size), Image.Resampling.LANCZOS)
 
     # Convert to RGBA to handle transparency
-    if board_img.mode != 'RGBA':
-        board_img = board_img.convert('RGBA')
+    if board_img.mode != "RGBA":
+        board_img = board_img.convert("RGBA")
 
     # Rotate board 180° if viewing from black's perspective
-    if side == 'black':
+    if side == "black":
         board_img = board_img.rotate(180)
 
     # Create a new image for compositing
@@ -162,7 +159,7 @@ def render_position(
                 piece_path = pieces_dir / piece_filename
 
                 if not piece_path.exists():
-                    print(f"Warning: Piece file not found: {piece_path}", file=sys.stderr)
+                    sys.stderr.write(f"Warning: Piece file not found: {piece_path}\n")
                     continue
 
                 # Load and resize piece
@@ -170,11 +167,11 @@ def render_position(
                 piece_img = piece_img.resize((size, size), Image.Resampling.LANCZOS)
 
                 # Convert to RGBA
-                if piece_img.mode != 'RGBA':
-                    piece_img = piece_img.convert('RGBA')
+                if piece_img.mode != "RGBA":
+                    piece_img = piece_img.convert("RGBA")
 
                 # Calculate position on board
-                if side == 'black':
+                if side == "black":
                     # Flip coordinates for black's perspective
                     x = (7 - file_idx) * size
                     y = (7 - rank_idx) * size
@@ -190,93 +187,95 @@ def render_position(
     print(f"Chess position rendered to: {output}")
 
 
-def main() -> None:
-    """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Render chess positions from FEN notation using chess.com board and piece images.",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Starting position with brown board and alpha pieces
-  %(prog)s --board brown --pieces alpha --size 80
+@click.command(
+    context_settings={"help_option_names": ["-h", "--help"]},
+)
+@click.option(
+    "--fen",
+    type=str,
+    default=None,
+    help="FEN string representing the chess position "
+    "(default: starting position if neither --fen nor --id provided)",
+)
+@click.option(
+    "--id",
+    "position_id",
+    type=int,
+    default=None,
+    help="Load FEN from fen.json by position ID",
+)
+@click.option(
+    "--board",
+    type=str,
+    required=True,
+    help='Board style name without .png extension (e.g., "brown", "marble")',
+)
+@click.option(
+    "--pieces",
+    type=str,
+    required=True,
+    help='Pieces directory name (e.g., "alpha", "3d_wood")',
+)
+@click.option(
+    "--size",
+    type=int,
+    default=DEFAULT_SIZE,
+    show_default=True,
+    help="Size of each square in pixels",
+)
+@click.option(
+    "--side",
+    type=click.Choice(["white", "black"], case_sensitive=False),
+    default="white",
+    show_default=True,
+    help="Perspective to render from: white (bottom) or black (top)",
+)
+@click.option(
+    "--output",
+    default=DEFAULT_OUTPUT,
+    show_default=True,
+    help="Output filename",
+    type=click.Path(path_type=Path),
+)
+def main(
+    fen: str | None,
+    position_id: int | None,
+    board: str,
+    pieces: str,
+    size: int,
+    side: str,
+    output: Path,
+):
+    """Render chess positions from FEN notation using chess.com board and piece images.
 
-  # Custom position
-  %(prog)s --fen "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" --board marble --pieces 3d_wood --size 100
-        """
-    )
-
-    # Create mutually exclusive group for FEN input methods
-    fen_group = parser.add_mutually_exclusive_group()
-
-    fen_group.add_argument(
-        '--fen',
-        type=str,
-        help=f'FEN string representing the chess position (default: starting position if neither --fen nor --id provided)'
-    )
-
-    fen_group.add_argument(
-        '--id',
-        type=int,
-        help='Load FEN from fen.json by position ID'
-    )
-
-    parser.add_argument(
-        '--board',
-        type=str,
-        required=True,
-        help='Board style name without .png extension (e.g., "brown", "marble")'
-    )
-
-    parser.add_argument(
-        '--pieces',
-        type=str,
-        required=True,
-        help='Pieces directory name (e.g., "alpha", "3d_wood")'
-    )
-
-    parser.add_argument(
-        '--size',
-        type=int,
-        default=DEFAULT_SIZE,
-        help=f'Size of each square in pixels (default: {DEFAULT_SIZE})'
-    )
-
-    parser.add_argument(
-        '--side',
-        type=str,
-        choices=['white', 'black'],
-        default='white',
-        help='Perspective to render from: white (bottom) or black (top). Default: white'
-    )
-
-    parser.add_argument(
-        '--output',
-        type=str,
-        default=DEFAULT_OUTPUT,
-        help=f'Output filename (default: {DEFAULT_OUTPUT})'
-    )
-
-    args = parser.parse_args()
+    \b
+    Examples:
+    * Starting position with brown board and alpha pieces:
+    \tuv run render_position.py --board brown --pieces alpha --size 80
+    * Custom position:
+    \tuv run render_position.py --fen "r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4" --board marble --pieces 3d_wood --size 100
+    """
+    if fen is not None and position_id is not None:
+        raise click.UsageError("Options --fen and --id are mutually exclusive.")
 
     try:
-        # Determine which FEN to use
-        if args.id is not None:
-            fen = load_fen_by_id(args.id)
-        elif args.fen is not None:
-            fen = args.fen
+        if position_id is not None:
+            fen_val = load_fen_by_id(position_id)
+        elif fen is not None:
+            fen_val = fen
         else:
-            fen = DEFAULT_FEN
+            fen_val = DEFAULT_FEN
 
         render_position(
-            fen=fen,
-            board_name=args.board,
-            pieces_name=args.pieces,
-            size=args.size,
-            output=args.output,
-            side=args.side
+            fen=fen_val,
+            board_name=board,
+            pieces_name=pieces,
+            size=size,
+            output=output,
+            side=side,
         )
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        sys.stderr.write(f"Error: {e}\n")
         sys.exit(1)
 
 
