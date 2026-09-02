@@ -73,3 +73,11 @@ Options:
   --output PATH         Output filename  [default: chess_position.png]
   -h, --help            Show this message and exit.
 ```
+
+## Development
+
+Format the Python source code after making changes:
+
+```shell
+.script/format(.ps1/.sh)
+```
