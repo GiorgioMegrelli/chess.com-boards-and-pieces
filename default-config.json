@@ -289,6 +289,14 @@
                     "default": 200,
                     "available": "range(20, 301, 10)"
                 }
+            },
+            "ohdxn": {
+                "readable_name": "Band Class",
+                "url-template": "assets-themes-boards",
+                "size": {
+                    "default": 200,
+                    "available": "range(20, 301, 10)"
+                }
             }
         }
     },
@@ -603,6 +611,14 @@
             "3d_plastic": {
                 "readable_name": "3D - Plastic",
                 "url-template": "chesscom-files-pieces",
+                "size": {
+                    "default": 150,
+                    "available": "range(20, 301, 10)"
+                }
+            },
+            "ca09k": {
+                "readable_name": "Band Class",
+                "url-template": "assets-themes-pieces",
                 "size": {
                     "default": 150,
                     "available": "range(20, 301, 10)"
