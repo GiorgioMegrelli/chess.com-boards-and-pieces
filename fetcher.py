@@ -179,13 +179,18 @@ def request_image_as_png(url_path: str, *, wait_time_ms: int = 0) -> bytes:
     return output_buffer.getvalue()
 
 
-def start_process(config: FetcherConfig, output_dir: Path, wait_time_ms: int):
+def start_process(
+    config: FetcherConfig, output_dir: Path, wait_time_ms: int, force_to_download: bool
+):
     with tqdm(total=len(config.boards), desc="Downloading boards") as p_bar:
         for col_name, board in config.boards.items():
             p_bar.set_description(f"Downloading '{col_name}'")
-            content = request_image_as_png(board.default_url, wait_time_ms=wait_time_ms)
             file_path = output_dir / "boards" / f"{col_name}.png"
-            save_to_file(file_path, content)
+            if not file_path.exists() or force_to_download:
+                content = request_image_as_png(
+                    board.default_url, wait_time_ms=wait_time_ms
+                )
+                save_to_file(file_path, content)
             p_bar.update(1)
         p_bar.set_description("Boards are Downloaded!")
 
@@ -196,11 +201,12 @@ def start_process(config: FetcherConfig, output_dir: Path, wait_time_ms: int):
             with tqdm(pieces, leave=False) as nested_p_bar:
                 for piece in nested_p_bar:
                     nested_p_bar.set_description(human_readable_piece(piece.name))
-                    content = request_image_as_png(
-                        piece.default_url, wait_time_ms=wait_time_ms
-                    )
                     file_path = pieces_dir / col_name / f"{piece.name}.png"
-                    save_to_file(file_path, content)
+                    if not file_path.exists() or force_to_download:
+                        content = request_image_as_png(
+                            piece.default_url, wait_time_ms=wait_time_ms
+                        )
+                        save_to_file(file_path, content)
             p_bar.update(1)
         p_bar.set_description("Pieces are Downloaded!")
 
@@ -227,12 +233,21 @@ def start_process(config: FetcherConfig, output_dir: Path, wait_time_ms: int):
     default=DEFAULT_WAIT_MS,
     help="Interval in millisecond between requests.",
 )
-def main(config: Path, output: Path, wait_interval: int) -> None:
+@click.option(
+    "-f",
+    "--force",
+    "force_to_download",
+    is_flag=True,
+    help="Force to download even if the entity already exists.",
+)
+def main(
+    config: Path, output: Path, wait_interval: int, force_to_download: bool
+) -> None:
     """
     A script for downloading boards and pieces.
     """
     parsed_config = FetcherConfig.parse(config)
-    start_process(parsed_config, output, wait_interval)
+    start_process(parsed_config, output, wait_interval, force_to_download)
 
 
 if __name__ == "__main__":
