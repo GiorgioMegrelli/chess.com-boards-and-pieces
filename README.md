@@ -1,5 +1,8 @@
 # chess.com-boards-and-pieces
 
+> [!IMPORTANT]
+> The branch is 'freezed'. The development is moved to `v2.x`, therefore, new pieces and boards will be there.
+
 This repository contains boards and sets of pieces from <strong>[chess.com](https://www.chess.com)</strong>.
 </br>
 Look at `data.json` file to see urls for each type of a board or set.
