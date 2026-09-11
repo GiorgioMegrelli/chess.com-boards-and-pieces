@@ -182,9 +182,6 @@ def request_image_as_png(url_path: str, *, wait_time_ms: int = 0) -> bytes:
 def start_process(config: FetcherConfig, output_dir: Path):
     with tqdm(total=len(config.boards), desc="Downloading boards") as p_bar:
         for col_name, board in config.boards.items():
-            if col_name != "6m5lc":
-                continue
-            print("Processing 6m5lc")
             p_bar.set_description(f"Downloading '{col_name}'")
             content = request_image_as_png(
                 board.default_url, wait_time_ms=DEFAULT_WAIT_MS
@@ -192,8 +189,6 @@ def start_process(config: FetcherConfig, output_dir: Path):
             file_path = output_dir / "boards" / f"{col_name}.png"
             save_to_file(file_path, content)
             p_bar.update(1)
-            if True:
-                return
         p_bar.set_description("Boards are Downloaded!")
 
     pieces_dir = output_dir / "pieces"
